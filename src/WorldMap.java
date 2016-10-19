@@ -1,5 +1,7 @@
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
@@ -12,8 +14,9 @@ public class WorldMap extends BasicGameState {
     private int x,y;
     private Player player;
     private Input input;
-    private World world;
-    private Vec2 gravity;
+
+
+    private Shape boundingBox;
 
 
 
@@ -25,12 +28,13 @@ public class WorldMap extends BasicGameState {
 
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
-        gravity = new Vec2(0,-10);
-        world = new World(gravity,false);
         player = new Player();
         map = new Image("img/floor.bmp");
         x = 0;
         y = 576 - map.getHeight();
+
+        boundingBox = new Rectangle(x,y,map.getWidth(),map.getHeight());
+
 
 
 
@@ -43,7 +47,8 @@ public class WorldMap extends BasicGameState {
         g.drawImage(map,x,y);
         g.drawImage(player.getImg(),player.getX(),player.getY());
 
-
+        g.draw(boundingBox);
+        g.draw(player.getBoundingBox());
 
 
 
@@ -55,10 +60,24 @@ public class WorldMap extends BasicGameState {
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
+        player.transfromXY(0,0);
+        player.gameStateDelta = delta;
+        inputChecker(input);
 
-        if(input.isKeyDown(input.KEY_W)){
-            player.transfromXY(0,-1);
+        if(player.isCollision(boundingBox)){
+            System.out.println("collis");
         }
+
+
+
+
+
+    }
+    public void inputChecker(Input input){
+        if(input.isKeyPressed(input.KEY_W)){
+            player.transfromXY(0,-60);
+        }
+
         if(input.isKeyDown(input.KEY_S)){
             player.transfromXY(0,1);
         }
@@ -68,9 +87,6 @@ public class WorldMap extends BasicGameState {
         if(input.isKeyDown(input.KEY_D)){
             player.transfromXY(1,0);
         }
-
-
-
     }
 
     public int getID() {

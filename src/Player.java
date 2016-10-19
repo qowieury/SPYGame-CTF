@@ -1,40 +1,62 @@
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
-import org.newdawn.slick.geom.Transform;
-import org.newdawn.slick.state.*;
-import org.jbox2d.common.*;
-import org.jbox2d.dynamics.*;
-import org.jbox2d.collision.*;
 
 public class Player {
 
+    public int gameStateDelta;
+
+    private PlayerPhysics playerPhysics;
     private Image player;
     private String objID;
     private float x,y;
-    private Shape shape;
+    private Shape boundingBox;
+    private float jumpVelocity;
+
+
+    private boolean isCollis;
 
 
 
     public Player() throws SlickException {
-        player = new Image("img/rect.bmp");
+
+
+
+        playerPhysics = new PlayerPhysics();
+        player = new Image("img/playerLeft.png");
         objID = new String("player");
-        
-
-
-
+        boundingBox = new Rectangle(x
+                                    ,y
+                                    ,player.getWidth()
+                                    ,player.getHeight());
 
     }
-    public void playerPhysic(Vec2 vec,World world){
-        world.
+
+    public Shape getBoundingBox(){
+        return this.boundingBox;
+
+    }
+
+    public boolean isCollision(Shape otherBox){
+        if (this.getBoundingBox() == null) {
+            return false;
+        }
+        isCollis = this.getBoundingBox().intersects(otherBox);
+        return isCollis;
     }
 
     public void transfromXY(float x,float y){
         this.x += x;
         this.y += y;
+        boundingBox.setLocation(this.x,this.y);
+
+        if(isCollis == false) {
+           this.y = playerPhysics.gravity(this.y,this.gameStateDelta);
+        }
 
     }
+
+
 
     public Image getImg(){
         return player;
