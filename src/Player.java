@@ -4,15 +4,18 @@ import org.newdawn.slick.geom.*;
 
 public class Player {
 
-    public int gameStateDelta;
+    private int gameStateDelta;
 
-    private PlayerPhysics playerPhysics;
+    private gamePhysics playerPhysics;
     private Image player;
     private String objID;
     private float x,y;
     private Shape boundingBox;
-    private float jumpVelocity;
 
+    private Point position;
+
+    private float jumpVelocity;
+    private boolean isPlayerJump;
 
     private boolean isCollis;
 
@@ -22,14 +25,29 @@ public class Player {
 
 
 
-        playerPhysics = new PlayerPhysics();
+        playerPhysics = new gamePhysics();
         player = new Image("img/playerLeft.png");
         objID = new String("player");
-        boundingBox = new Rectangle(x
-                                    ,y
+
+        position = new Point(0,0);
+
+        boundingBox = new Rectangle(position.getX()
+                                    ,position.getY()
                                     ,player.getWidth()
                                     ,player.getHeight());
 
+    }
+
+    public void update(){
+
+    }
+
+    public void jump(){
+
+    }
+
+    public void setGameStateDelta(int delta){
+        this.gameStateDelta = delta;
     }
 
     public Shape getBoundingBox(){

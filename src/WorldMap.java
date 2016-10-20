@@ -43,6 +43,7 @@ public class WorldMap extends BasicGameState {
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
+
         input = gc.getInput();
         g.drawImage(map,x,y);
         g.drawImage(player.getImg(),player.getX(),player.getY());
@@ -61,12 +62,11 @@ public class WorldMap extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
         player.transfromXY(0,0);
-        player.gameStateDelta = delta;
+        player.setGameStateDelta(delta);
         inputChecker(input);
+        player.isCollision(boundingBox);
 
-        if(player.isCollision(boundingBox)){
-            System.out.println("collis");
-        }
+
 
 
 
@@ -75,11 +75,11 @@ public class WorldMap extends BasicGameState {
     }
     public void inputChecker(Input input){
         if(input.isKeyPressed(input.KEY_W)){
-            player.transfromXY(0,-60);
+            player.jump();
         }
 
         if(input.isKeyDown(input.KEY_S)){
-            player.transfromXY(0,1);
+            //player.transfromXY(0,1);
         }
         if(input.isKeyDown(input.KEY_A)){
             player.transfromXY(-1,0);
