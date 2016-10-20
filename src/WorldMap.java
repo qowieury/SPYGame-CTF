@@ -11,7 +11,11 @@ public class WorldMap extends BasicGameState {
 
     private final int ID = 0;
     private Image map;
-    private int x,y;
+
+    private float x,y;
+    private float vX,vY;
+
+
     private Player player;
     private Input input;
 
@@ -65,6 +69,7 @@ public class WorldMap extends BasicGameState {
         player.setGameStateDelta(delta);
         inputChecker(input);
         player.isCollision(boundingBox);
+        player.update();
 
 
 

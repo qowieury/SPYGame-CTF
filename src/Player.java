@@ -12,8 +12,6 @@ public class Player {
     private float x,y;
     private Shape boundingBox;
 
-    private Point position;
-
     private float jumpVelocity;
     private boolean isPlayerJump;
 
@@ -29,20 +27,37 @@ public class Player {
         player = new Image("img/playerLeft.png");
         objID = new String("player");
 
-        position = new Point(0,0);
 
-        boundingBox = new Rectangle(position.getX()
-                                    ,position.getY()
+
+        boundingBox = new Rectangle(getX()
+                                    ,getY()
                                     ,player.getWidth()
                                     ,player.getHeight());
 
     }
 
+
     public void update(){
+        //jump
+        if(isPlayerJump == true){
+            if(jumpVelocity > 0){
+                this.y -=4*gameStateDelta ;
+                jumpVelocity -= 0.03*gameStateDelta;
+            }else{
+                jumpVelocity = 0;
+                if(isCollis == true){
+                    isPlayerJump = false;
+                }
+            }
+        }//end jump
 
     }
 
     public void jump(){
+        if(isPlayerJump == false){
+            isPlayerJump = true;
+            jumpVelocity = 1.5f;
+        }
 
     }
 
@@ -70,6 +85,7 @@ public class Player {
 
         if(isCollis == false) {
            this.y = playerPhysics.gravity(this.y,this.gameStateDelta);
+
         }
 
     }
