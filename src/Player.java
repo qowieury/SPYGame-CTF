@@ -6,14 +6,16 @@ public class Player {
 
     private int gameStateDelta;
 
-    private gamePhysics playerPhysics;
+    private GamePhysics playerPhysics;
     private Image player;
     private String objID;
     private float x,y;
     private Shape boundingBox;
 
     private float jumpVelocity;
+    private float walkVelocity;
     private boolean isPlayerJump;
+    private float walkSpeed;
 
     private boolean isCollis;
 
@@ -23,7 +25,7 @@ public class Player {
 
 
 
-        playerPhysics = new gamePhysics();
+        playerPhysics = new GamePhysics();
         player = new Image("img/playerLeft.png");
         objID = new String("player");
 
@@ -37,26 +39,61 @@ public class Player {
     }
 
 
-    public void update(){
+    public void update() {
+        //gravity
+        if (isCollis == false) {
+            this.y = playerPhysics.gravity(this.y, this.gameStateDelta);
+        }//end gravity
         //jump
-        if(isPlayerJump == true){
-            if(jumpVelocity > 0){
-                this.y -=4*gameStateDelta ;
-                jumpVelocity -= 0.03*gameStateDelta;
-            }else{
+        if (isPlayerJump == true) {
+            if (jumpVelocity > 0) {
+                this.y -= 1 * gameStateDelta;
+                jumpVelocity -= 0.03 * gameStateDelta;
+            } else {
                 jumpVelocity = 0;
-                if(isCollis == true){
+                if (isCollis == true) {
                     isPlayerJump = false;
+                    walkSpeed = 0;
                 }
             }
         }//end jump
+
+        //walk smooth
+        if (walkVelocity != 0) {
+            if (walkVelocity < 0) {
+                this.x += (0.2 * gameStateDelta) + walkSpeed;
+                this.walkVelocity += 0.08 * gameStateDelta;
+                if (walkVelocity > 0) {
+                    walkVelocity = 0;
+                }
+            } else {
+                this.x -= (0.2 * gameStateDelta) + walkSpeed;
+                this.walkVelocity -= 0.08 * gameStateDelta;
+                if (walkVelocity < 0) {
+                    walkVelocity = 0;
+                }
+
+            }
+
+        }
+    }
+
+    public  void walk(String side){
+        if("right".equals(side)){
+            walkVelocity = -10;
+        }
+        if ("left".equals(side)){
+            walkVelocity = 10;
+        }
 
     }
 
     public void jump(){
         if(isPlayerJump == false){
             isPlayerJump = true;
-            jumpVelocity = 1.5f;
+            jumpVelocity = 10.f;
+            walkSpeed = 0.5f;
+
         }
 
     }
@@ -83,10 +120,7 @@ public class Player {
         this.y += y;
         boundingBox.setLocation(this.x,this.y);
 
-        if(isCollis == false) {
-           this.y = playerPhysics.gravity(this.y,this.gameStateDelta);
 
-        }
 
     }
 

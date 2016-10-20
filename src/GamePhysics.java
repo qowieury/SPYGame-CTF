@@ -1,17 +1,17 @@
 import org.newdawn.slick.*;
 
 
-public class gamePhysics {
+public class GamePhysics {
 
 
 
-    public gamePhysics(){
+    public GamePhysics(){
 
     }
 
 
     public float gravity(float y,int delta){
-        return y+(0.3f * delta);
+        return y+(0.4f*delta);
 
     }
 

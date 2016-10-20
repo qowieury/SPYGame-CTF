@@ -87,10 +87,12 @@ public class WorldMap extends BasicGameState {
             //player.transfromXY(0,1);
         }
         if(input.isKeyDown(input.KEY_A)){
-            player.transfromXY(-1,0);
+            //player.transfromXY(-1,0);
+            player.walk("left");
         }
         if(input.isKeyDown(input.KEY_D)){
-            player.transfromXY(1,0);
+            //player.transfromXY(1,0);
+            player.walk("right");
         }
     }
 
